@@ -1,0 +1,117 @@
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($any($event))"><ion-refresher-content /></ion-refresher>
+
+  @if (group(); as g) {
+    <div class="k-page">
+      <header class="bar">
+        <button class="k-icon-btn" (click)="back()" aria-label="Voltar">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        </button>
+        <div class="actions">
+          <button class="k-icon-btn" (click)="invite()" aria-label="Convidar pessoas">
+            <svg viewBox="0 0 24 24"><path d="M15 19v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1"/><circle cx="9" cy="8" r="3.5"/><path d="M19 8v6M16 11h6"/></svg>
+          </button>
+          <button class="k-icon-btn" (click)="leave()" aria-label="Sair do grupo">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="k-hero head rise">
+        <span class="emoji">{{ g.emoji }}</span>
+        <h1>{{ g.name }}</h1>
+        <p>{{ g.members.length }} {{ g.members.length === 1 ? 'pessoa' : 'pessoas' }} · total {{ (balances()?.totalCents ?? 0) | money: g.currency }}</p>
+        <strong class="mine">
+          @if (myBalance() > 0) { Você recebe {{ myBalance() | money: g.currency }} }
+          @else if (myBalance() < 0) { Você deve {{ -myBalance() | money: g.currency }} }
+          @else { Você está em dia ✓ }
+        </strong>
+      </section>
+
+      <nav class="tabs" role="tablist">
+        <button role="tab" [class.on]="tab() === 'expenses'" (click)="tab.set('expenses')">Despesas</button>
+        <button role="tab" [class.on]="tab() === 'balances'" (click)="tab.set('balances')">Saldos</button>
+      </nav>
+
+      @if (tab() === 'expenses') {
+        @if (!expenses().length) {
+          <div class="k-empty rise"><div class="emoji">🧾</div><h3>Nenhuma despesa</h3><p>Adicione a primeira para começar a dividir.</p></div>
+        }
+        @for (e of expenses(); track e.id) {
+          <div class="k-card exp" (click)="openExpense(e)">
+            <span class="cat" [style.background]="cat[e.category].color + '22'">{{ cat[e.category].emoji }}</span>
+            <div class="info">
+              <strong>{{ e.description }}</strong>
+              <span class="k-muted meta">{{ name(e.payer.id) }} pagou · {{ e.date | date: 'dd/MM' }}</span>
+            </div>
+            <div class="amt">
+              <strong>{{ e.amountCents | money: g.currency }}</strong>
+              <button class="del" (click)="$event.stopPropagation(); remove(e)" aria-label="Excluir">🗑</button>
+            </div>
+          </div>
+        }
+      } @else {
+        <div class="k-section"><h2 class="k-h2">Saldos</h2></div>
+        @for (b of balances()?.balances ?? []; track b.userId) {
+          <div class="k-card row">
+            <k-avatar [name]="b.name" [size]="38" />
+            <span class="n">{{ name(b.userId) }}</span>
+            <span class="k-chip" [class.pos]="b.balanceCents > 0" [class.neg]="b.balanceCents < 0">
+              @if (b.balanceCents === 0) { em dia } @else { {{ b.balanceCents | money: g.currency : true }} }
+            </span>
+          </div>
+        }
+
+        <div class="k-section"><h2 class="k-h2">Quem paga quem</h2></div>
+        @if (!balances()?.suggestions?.length) {
+          <div class="k-empty"><div class="emoji">🎉</div><h3>Tudo acertado</h3></div>
+        }
+        @for (s of balances()?.suggestions ?? []; track $index) {
+          <div class="k-card row">
+            <k-avatar [name]="s.from.name" [size]="38" />
+            <span class="n"><b>{{ name(s.from.id) }}</b> → <b>{{ name(s.to.id) }}</b><br><small class="k-muted">{{ s.amountCents | money: g.currency }}</small></span>
+            @if (s.from.id === meId) { <button class="k-btn small" (click)="settle(s)">Pagar</button> }
+            @else if (s.to.id === meId) { <button class="k-btn small ghost" (click)="settle(s)">Recebi</button> }
+          </div>
+        }
+
+        @if (settlements().length) {
+          <div class="k-section"><h2 class="k-h2">Histórico de pagamentos</h2></div>
+          @for (s of settlements(); track s.id) {
+            <div class="k-card pay">
+              <div class="line">
+                <span class="n"><b>{{ name(s.from.id) }}</b> → <b>{{ name(s.to.id) }}</b><br><small class="k-muted">{{ s.date | date: 'dd/MM/yyyy HH:mm' }}</small></span>
+                <strong>{{ s.amountCents | money: g.currency }}</strong>
+              </div>
+              <div class="line meta2">
+                <span class="k-chip" [class.pos]="s.status === 'CONFIRMED'" [class.neg]="s.status === 'REJECTED'">{{ statusLabel[s.status] }}</span>
+                @if (s.hasReceipt) { <button class="link" (click)="viewReceipt(s)">📎 Ver comprovante</button> }
+                @else if (s.from.id === meId && s.status !== 'CONFIRMED') {
+                  <label class="link">📎 Anexar comprovante<input type="file" accept="image/jpeg,image/png,image/webp,application/pdf" hidden (change)="attachReceipt(s, $event)" /></label>
+                }
+              </div>
+              @if (s.status === 'PENDING' && s.to.id === meId) {
+                <div class="line actions2">
+                  <button class="k-btn danger sm" (click)="review(s, 'REJECTED')">Não recebi</button>
+                  <button class="k-btn sm" (click)="review(s, 'CONFIRMED')">Confirmar recebimento</button>
+                </div>
+              }
+              @if (s.confirmedAt && s.status !== 'PENDING') {
+                <small class="k-muted">{{ s.status === 'CONFIRMED' ? 'Confirmado' : 'Recusado' }} em {{ s.confirmedAt | date: 'dd/MM/yyyy HH:mm' }}</small>
+              }
+            </div>
+          }
+        }
+      }
+    </div>
+
+    <div class="dock">
+      @if (tab() === 'balances') { <button class="k-btn ghost" (click)="settle()">Acertar contas</button> }
+      <button class="k-btn" (click)="openExpense()">＋ Nova despesa</button>
+    </div>
+  } @else if (error()) {
+    <div class="k-page"><div class="k-empty"><div class="emoji">📡</div><h3>Não deu para carregar</h3><button class="k-btn" (click)="back()">Voltar</button></div></div>
+  } @else {
+    <div class="k-page"><div class="k-skeleton"></div><div class="k-skeleton"></div></div>
+  }
+</ion-content>

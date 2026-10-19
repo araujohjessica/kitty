@@ -1,0 +1,30 @@
+.body { padding: 22px 18px calc(28px + env(safe-area-inset-bottom)); background: var(--k-bg); min-height: 100%; }
+.top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.amount { padding: 18px 18px 14px; text-align: center; }
+.desc { width: 100%; border: 0; border-top: 1px solid var(--k-border); margin-top: 8px; padding: 14px 0 2px; background: transparent; outline: none; text-align: center;
+  font: 600 17px var(--ion-font-family); color: var(--k-text); }
+.desc::placeholder { color: var(--k-muted); font-weight: 500; }
+.lbl { margin: 20px 4px 10px; }
+
+.cats { display: flex; gap: 8px; overflow-x: auto; margin: 0 -18px; padding: 2px 18px 6px; scrollbar-width: none; }
+.cats::-webkit-scrollbar { display: none; }
+.cats button { flex: none; display: flex; align-items: center; gap: 7px; height: 40px; padding: 0 14px 0 10px; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid transparent; background: var(--k-surface); color: var(--k-text); font: 600 13.5px var(--ion-font-family); box-shadow: var(--k-shadow); }
+.cats button.on { border-color: var(--c); background: color-mix(in srgb, var(--c) 14%, var(--k-surface)); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+select.k-input { appearance: none; }
+
+.people { margin-top: 14px; padding: 6px 14px; }
+.person { display: flex; align-items: center; gap: 10px; padding: 10px 0; min-height: 50px; }
+.person + .person { border-top: 1px solid var(--k-border); }
+.person.off .pname { color: var(--k-muted); }
+.check { width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--k-border); background: transparent; color: #fff; font-size: 14px; font-weight: 800; display: grid; place-items: center; cursor: pointer; flex: none; }
+.check.on { background: var(--k-grad); border-color: transparent; }
+.pname { flex: 1; font-weight: 600; font-size: 15.5px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.val { font-weight: 700; font-variant-numeric: tabular-nums; }
+.inp { display: flex; align-items: center; gap: 6px; background: var(--k-surface-2); border-radius: 12px; padding: 0 10px; height: 40px; }
+.inp input { width: 70px; border: 0; background: transparent; outline: none; text-align: right; font: 700 15px var(--ion-font-family); color: var(--k-text); }
+.inp em { font-style: normal; color: var(--k-muted); font-weight: 700; font-size: 13px; }
+.hint { text-align: center; font-weight: 700; font-size: 13.5px; margin-top: 10px; }
+.hint.ok { color: var(--k-green); } .hint.bad { color: var(--k-red); }
+.save { margin-top: 22px; }

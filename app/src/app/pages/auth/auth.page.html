@@ -1,0 +1,49 @@
+<ion-content [fullscreen]="true">
+  <div class="wrap">
+    <section class="hero">
+      <div class="logo rise">🐷</div>
+      <h1 class="rise" style="animation-delay: 60ms">Kitty</h1>
+      <p class="rise" style="animation-delay: 120ms">A vaquinha do grupo.<br />Divida, acerte e siga a vida.</p>
+      <div class="floaties" aria-hidden="true"><span>🍕</span><span>✈️</span><span>🏠</span><span>🎉</span></div>
+    </section>
+
+    <section class="sheet k-card rise" style="animation-delay: 160ms">
+      <div class="k-segment">
+        <button [class.on]="mode() === 'login'" (click)="mode.set('login')">Entrar</button>
+        <button [class.on]="mode() === 'register'" (click)="mode.set('register')">Criar conta</button>
+      </div>
+
+      <form (ngSubmit)="submit()" autocomplete="on">
+        @if (mode() === 'register') {
+          <label class="k-field">
+            <span>Nome</span>
+            <input class="k-input" name="name" [(ngModel)]="name" placeholder="Como te chamam?" autocomplete="name" />
+          </label>
+        }
+        <label class="k-field">
+          <span>E-mail</span>
+          <input class="k-input" type="email" name="email" [(ngModel)]="email" placeholder="voce@email.com" autocomplete="email" inputmode="email" />
+        </label>
+        <label class="k-field">
+          <span>Senha</span>
+          <input class="k-input" type="password" name="password" [(ngModel)]="password" placeholder="Mínimo 6 caracteres"
+                 [attr.autocomplete]="mode() === 'login' ? 'current-password' : 'new-password'" />
+        </label>
+
+        @if (mode() === 'register') {
+          <div class="k-field"><span>Chave Pix (opcional)</span>
+            <k-pix-field [(type)]="pixType" [(key)]="pixKey" />
+            <small class="k-muted">Assim seus amigos sabem para onde pagar. Dá para mudar depois no perfil.</small>
+          </div>
+        }
+
+        <button class="k-btn block" type="submit" [disabled]="!valid || loading()">
+          @if (loading()) { <ion-spinner name="crescent" /> } @else { {{ mode() === 'login' ? 'Entrar' : 'Criar minha conta' }} }
+        </button>
+      </form>
+
+      <div class="divider"><span>ou</span></div>
+      <button class="k-btn ghost block" type="button" (click)="demo()" [disabled]="loading()">✨ Explorar com conta demo</button>
+    </section>
+  </div>
+</ion-content>

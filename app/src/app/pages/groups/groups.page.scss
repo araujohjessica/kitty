@@ -1,0 +1,27 @@
+.top { display: flex; align-items: center; justify-content: space-between; padding: calc(var(--ion-safe-area-top, 0px) + 14px) 2px 18px; }
+.me { text-decoration: none; }
+.summary { padding: 22px; }
+.summary .label { font-size: 13px; font-weight: 600; opacity: .85; margin-bottom: 14px; }
+.cols { display: flex; align-items: stretch; gap: 18px; }
+.cols > div { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.cols small { font-size: 12px; opacity: .85; font-weight: 500; }
+.cols strong { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
+.sep { flex: none !important; width: 1px; background: rgba(255,255,255,.3); }
+.small { font-size: 13px; font-weight: 600; }
+
+.gcard { display: flex; align-items: center; gap: 14px; padding: 16px; margin-bottom: 12px; text-decoration: none; color: inherit; transition: transform .15s; }
+.gcard:active { transform: scale(.985); }
+.gemoji { width: 56px; height: 56px; flex: none; border-radius: 19px; display: grid; place-items: center; font-size: 30px; background: var(--k-grad-soft); }
+.info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.info strong { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.meta { font-size: 13px; }
+.stack { display: flex; margin-top: 6px; }
+.stack k-avatar { margin-left: -7px; }
+.stack k-avatar:first-child { margin-left: 0; }
+.more { margin-left: 4px; font-size: 12px; font-weight: 700; color: var(--k-muted); align-self: center; }
+.bal { flex: none; align-self: flex-start; }
+
+.plus { font-size: 28px; line-height: 1; font-weight: 400; }
+.fab-pill { display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 18px; border: 0; border-radius: 16px; cursor: pointer;
+  font: 700 14.5px var(--ion-font-family); color: var(--k-text); background: var(--k-surface); box-shadow: var(--k-shadow); white-space: nowrap; }
+ion-fab-list { right: 0 !important; left: auto !important; width: max-content !important; align-items: flex-end !important; gap: 10px; margin: 0 0 4px; bottom: 60px !important; }

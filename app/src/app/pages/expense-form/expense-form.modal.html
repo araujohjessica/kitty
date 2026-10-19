@@ -1,0 +1,69 @@
+<div class="body">
+  <div class="top">
+    <h2 class="k-h2">{{ expense ? 'Editar despesa' : 'Nova despesa' }}</h2>
+    <button class="k-icon-btn plain" (click)="close()" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="amount k-card">
+    <k-amount [(cents)]="cents" [currency]="cur" (centsChange)="splitType !== 'EQUAL' && prefill()" />
+    <input class="desc" [(ngModel)]="description" placeholder="Do que foi essa despesa?" maxlength="80" />
+  </div>
+
+  <p class="k-eyebrow lbl">Categoria</p>
+  <div class="cats">
+    @for (c of cats; track c) {
+      <button [class.on]="category === c" (click)="category = c" [style.--c]="meta[c].color">
+        <span>{{ meta[c].emoji }}</span>{{ meta[c].label }}
+      </button>
+    }
+  </div>
+
+  <div class="two">
+    <label class="k-field"><span>Quem pagou</span>
+      <select class="k-input" [(ngModel)]="paidBy">
+        @for (m of group.members; track m.id) { <option [value]="m.id">{{ m.id === meId ? 'Você' : m.name }}</option> }
+      </select>
+    </label>
+    <label class="k-field"><span>Data</span><input class="k-input" type="date" [(ngModel)]="date" /></label>
+  </div>
+
+  <p class="k-eyebrow lbl">Como dividir</p>
+  <div class="k-segment">
+    <button [class.on]="splitType === 'EQUAL'" (click)="setType('EQUAL')">Igual</button>
+    <button [class.on]="splitType === 'EXACT'" (click)="setType('EXACT')">Valores</button>
+    <button [class.on]="splitType === 'PERCENT'" (click)="setType('PERCENT')">Porcentagem</button>
+  </div>
+
+  <div class="people k-card">
+    @for (r of rows; track r.id) {
+      <div class="person" [class.off]="!r.on">
+        <button class="check" [class.on]="r.on" (click)="toggle(r)" [attr.aria-label]="'Incluir ' + r.name">{{ r.on ? '✓' : '' }}</button>
+        <k-avatar [name]="r.name" [size]="34" />
+        <span class="pname">{{ r.id === meId ? 'Você' : r.name }}</span>
+
+        @if (r.on) {
+          @if (splitType === 'EQUAL') {
+            <span class="val">{{ money(preview(r)) }}</span>
+          } @else {
+            <div class="inp">
+              <input inputmode="decimal" [(ngModel)]="r.value" [attr.aria-label]="'Valor de ' + r.name" />
+              <em>{{ splitType === 'EXACT' ? cur === 'BRL' ? 'R$' : cur : '%' }}</em>
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+
+  @if (splitType !== 'EQUAL') {
+    <p class="hint" [class.ok]="remaining === 0" [class.bad]="remaining !== 0">
+      @if (remaining === 0) { ✓ Divisão fechada }
+      @else if (splitType === 'EXACT') { {{ remaining > 0 ? 'Faltam ' + money(remaining) : 'Passou ' + money(-remaining) }} }
+      @else { {{ remaining > 0 ? 'Faltam ' + remaining + '%' : 'Passou ' + (-remaining) + '%' }} }
+    </p>
+  }
+
+  <button class="k-btn block save" [disabled]="!valid || loading()" (click)="save()">
+    @if (loading()) { <ion-spinner name="crescent" /> } @else { {{ expense ? 'Salvar alterações' : 'Adicionar despesa' }} }
+  </button>
+</div>

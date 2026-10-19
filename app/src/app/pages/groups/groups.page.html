@@ -1,0 +1,61 @@
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($any($event))"><ion-refresher-content /></ion-refresher>
+
+  <div class="k-page">
+    <header class="top">
+      <div>
+        <p class="k-eyebrow">{{ greeting }}</p>
+        <h1 class="k-h1">{{ firstName() }} 👋</h1>
+      </div>
+      <a routerLink="/profile" class="me" aria-label="Perfil"><k-avatar [name]="user()?.name ?? '?'" [size]="46" /></a>
+    </header>
+
+    <section class="k-hero summary rise">
+      <p class="label">Seu saldo geral</p>
+      <div class="cols">
+        <div><small>Você tem a receber</small><strong>{{ owed() | money: currency() }}</strong></div>
+        <div class="sep"></div>
+        <div><small>Você deve</small><strong>{{ owe() | money: currency() }}</strong></div>
+      </div>
+    </section>
+
+    <div class="k-section"><h2 class="k-h2">Seus grupos</h2>
+      @if (groups()?.length) { <span class="k-muted small">{{ groups()!.length }} {{ groups()!.length === 1 ? 'grupo' : 'grupos' }}</span> }
+    </div>
+
+    @if (groups() === null) {
+      <div class="k-skeleton"></div><div class="k-skeleton"></div><div class="k-skeleton"></div>
+    } @else if (error()) {
+      <div class="k-empty"><div class="emoji">📡</div><h3>Não deu para carregar</h3><p>Verifique a conexão e puxe para atualizar.</p></div>
+    } @else if (!groups()!.length) {
+      <div class="k-empty rise"><div class="emoji">🐷</div><h3>Nenhum grupo ainda</h3><p>Crie um grupo para dividir despesas ou entre com um código de convite.</p></div>
+    } @else {
+      @for (g of groups(); track g.id; let i = $index) {
+        <a class="gcard k-card rise" [routerLink]="['/groups', g.id]" [style.animation-delay.ms]="i * 50">
+          <span class="gemoji">{{ g.emoji }}</span>
+          <div class="info">
+            <strong>{{ g.name }}</strong>
+            <span class="k-muted meta">{{ g.memberCount }} {{ g.memberCount === 1 ? 'pessoa' : 'pessoas' }} · {{ g.totalCents | money: g.currency }}</span>
+            <div class="stack">
+              @for (m of g.members; track m.id) { <k-avatar [name]="m.name" [size]="24" /> }
+              @if (g.memberCount > g.members.length) { <span class="more">+{{ g.memberCount - g.members.length }}</span> }
+            </div>
+          </div>
+          <div class="bal">
+            @if (g.myBalanceCents > 0) { <span class="k-chip pos">receber {{ g.myBalanceCents | money: g.currency }}</span> }
+            @else if (g.myBalanceCents < 0) { <span class="k-chip neg">pagar {{ -g.myBalanceCents | money: g.currency }}</span> }
+            @else { <span class="k-chip">tudo certo ✓</span> }
+          </div>
+        </a>
+      }
+    }
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button aria-label="Adicionar"><span class="plus">＋</span></ion-fab-button>
+    <ion-fab-list side="top">
+      <button class="fab-pill" (click)="newGroup()">🐷 Novo grupo</button>
+      <button class="fab-pill" (click)="joinByCode()">🔗 Entrar com código</button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>

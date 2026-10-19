@@ -1,0 +1,69 @@
+/* Kitty design tokens ------------------------------------------------------ */
+:root {
+  --k-violet: #7c5cff;
+  --k-pink: #ff5c9d;
+  --k-grad: linear-gradient(135deg, #7c5cff 0%, #b05cff 45%, #ff5c9d 100%);
+  --k-grad-soft: linear-gradient(135deg, rgba(124, 92, 255, 0.14), rgba(255, 92, 157, 0.14));
+  --k-green: #12b886;
+  --k-green-soft: rgba(18, 184, 134, 0.14);
+  --k-red: #f0476b;
+  --k-red-soft: rgba(240, 71, 107, 0.13);
+
+  --k-bg: #f5f4fb;
+  --k-surface: #ffffff;
+  --k-surface-2: #efedf8;
+  --k-text: #1b1830;
+  --k-muted: #7b7894;
+  --k-border: rgba(27, 24, 48, 0.07);
+  --k-shadow: 0 1px 2px rgba(27, 24, 48, 0.04), 0 8px 24px -8px rgba(60, 40, 140, 0.16);
+  --k-shadow-lg: 0 18px 40px -12px rgba(124, 92, 255, 0.45);
+  --k-radius: 22px;
+  --k-radius-sm: 14px;
+
+  --ion-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  --ion-background-color: var(--k-bg);
+  --ion-text-color: var(--k-text);
+  --ion-text-color-rgb: 27, 24, 48;
+
+  --ion-color-primary: #7c5cff;
+  --ion-color-primary-rgb: 124, 92, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #6d51e0;
+  --ion-color-primary-tint: #8a6cff;
+
+  --ion-color-success: #12b886;
+  --ion-color-success-rgb: 18, 184, 134;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #10a278;
+  --ion-color-success-tint: #2ac094;
+
+  --ion-color-danger: #f0476b;
+  --ion-color-danger-rgb: 240, 71, 107;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #d33f5e;
+  --ion-color-danger-tint: #f25a79;
+
+  --ion-safe-area-top: env(safe-area-inset-top);
+}
+
+:root.ion-palette-dark {
+  --k-bg: #0f0e17;
+  --k-surface: #1a1826;
+  --k-surface-2: #242136;
+  --k-text: #f3f1ff;
+  --k-muted: #9b98b5;
+  --k-border: rgba(255, 255, 255, 0.07);
+  --k-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  --k-green-soft: rgba(18, 184, 134, 0.18);
+  --k-red-soft: rgba(240, 71, 107, 0.18);
+
+  --ion-background-color: var(--k-bg);
+  --ion-text-color: var(--k-text);
+  --ion-text-color-rgb: 243, 241, 255;
+  --ion-item-background: var(--k-surface);
+  --ion-card-background: var(--k-surface);
+  --ion-toolbar-background: var(--k-bg);
+}

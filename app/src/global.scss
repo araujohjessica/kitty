@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@import "@ionic/angular/css/core.css";
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+@import "@ionic/angular/css/palettes/dark.class.css";
+
+/* ---------- base ---------- */
+html, body { background: var(--k-bg); }
+body { font-feature-settings: 'cv11', 'ss01'; -webkit-font-smoothing: antialiased; }
+ion-content { --background: var(--k-bg); }
+ion-header ion-toolbar { --background: transparent; --border-width: 0; }
+ion-header::after { display: none; }
+h1, h2, h3, p { margin: 0; }
+
+.k-page { padding: 8px 18px 120px; max-width: 640px; margin: 0 auto; }
+.k-page.no-fab { padding-bottom: 40px; }
+
+/* ---------- surfaces ---------- */
+.k-card {
+  background: var(--k-surface);
+  border-radius: var(--k-radius);
+  box-shadow: var(--k-shadow);
+  border: 1px solid var(--k-border);
+}
+.k-hero {
+  position: relative; overflow: hidden; color: #fff;
+  background: var(--k-grad); border-radius: 28px; padding: 22px;
+  box-shadow: var(--k-shadow-lg);
+}
+.k-hero::before, .k-hero::after {
+  content: ''; position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.12); pointer-events: none;
+}
+.k-hero::before { width: 190px; height: 190px; right: -50px; top: -70px; }
+.k-hero::after { width: 120px; height: 120px; left: -30px; bottom: -60px; background: rgba(255, 255, 255, 0.08); }
+.k-hero > * { position: relative; z-index: 1; }
+
+/* ---------- type ---------- */
+.k-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--k-muted); }
+.k-h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+.k-h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; }
+.k-muted { color: var(--k-muted); }
+.k-section { display: flex; align-items: center; justify-content: space-between; margin: 26px 2px 12px; }
+.k-pos { color: var(--k-green); }
+.k-neg { color: var(--k-red); }
+
+/* ---------- controls ---------- */
+.k-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer;
+  height: 52px; padding: 0 22px; border-radius: 16px; font: 700 16px var(--ion-font-family); letter-spacing: -0.01em;
+  color: #fff; background: var(--k-grad); box-shadow: var(--k-shadow-lg); transition: transform 0.12s, opacity 0.2s;
+}
+.k-btn:active { transform: scale(0.97); }
+.k-btn[disabled] { opacity: 0.45; box-shadow: none; pointer-events: none; }
+.k-btn.block { width: 100%; }
+.k-btn.ghost { background: var(--k-surface-2); color: var(--k-text); box-shadow: none; }
+.k-btn.danger { background: var(--k-red-soft); color: var(--k-red); box-shadow: none; }
+.k-btn.sm { height: 38px; padding: 0 16px; font-size: 14px; border-radius: 12px; }
+
+.k-field { display: block; margin-bottom: 14px; }
+.k-field > span { display: block; font-size: 12px; font-weight: 600; color: var(--k-muted); margin: 0 4px 6px; }
+.k-input, .k-field ion-input, .k-field ion-select {
+  --padding-start: 16px; --padding-end: 16px; --background: var(--k-surface-2);
+  width: 100%; min-height: 52px; border-radius: 14px; background: var(--k-surface-2); color: var(--k-text);
+  font: 500 16px var(--ion-font-family); border: 1.5px solid transparent; box-sizing: border-box; padding: 0 16px; outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.k-field ion-input { --padding-start: 0; --padding-end: 0; }
+.k-input:focus, .k-field ion-input.has-focus { border-color: var(--k-violet); background: var(--k-surface); }
+.k-input::placeholder { color: var(--k-muted); opacity: 0.7; }
+
+.k-chip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 700; background: var(--k-surface-2); color: var(--k-muted); white-space: nowrap;
+}
+.k-chip.pos { background: var(--k-green-soft); color: var(--k-green); }
+.k-chip.neg { background: var(--k-red-soft); color: var(--k-red); }
+
+.k-segment {
+  display: flex; padding: 4px; gap: 4px; border-radius: 16px; background: var(--k-surface-2);
+}
+.k-segment button {
+  flex: 1; border: 0; background: transparent; color: var(--k-muted); height: 40px; border-radius: 12px;
+  font: 700 14px var(--ion-font-family); cursor: pointer; transition: all 0.18s;
+}
+.k-segment button.on { background: var(--k-surface); color: var(--k-text); box-shadow: var(--k-shadow); }
+
+.k-icon-btn {
+  width: 42px; height: 42px; border-radius: 14px; border: 1px solid var(--k-border); cursor: pointer;
+  background: var(--k-surface); color: var(--k-text); display: grid; place-items: center; font-size: 20px; box-shadow: var(--k-shadow);
+}
+.k-icon-btn.plain { background: transparent; border-color: transparent; box-shadow: none; }
+
+.k-empty { text-align: center; padding: 48px 24px; color: var(--k-muted); }
+.k-empty .emoji { font-size: 54px; margin-bottom: 10px; }
+.k-empty h3 { color: var(--k-text); font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+
+.k-skeleton {
+  border-radius: var(--k-radius); height: 84px; margin-bottom: 12px;
+  background: linear-gradient(90deg, var(--k-surface) 25%, var(--k-surface-2) 37%, var(--k-surface) 63%);
+  background-size: 400% 100%; animation: shimmer 1.4s ease infinite;
+}
+@keyframes shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.rise { animation: rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* ---------- ionic overrides ---------- */
+ion-modal { --border-radius: 28px; }
+ion-modal.sheet::part(handle) { background: var(--k-muted); opacity: 0.4; width: 40px; height: 5px; }
+ion-toast { --border-radius: 16px; font-weight: 600; }
+ion-fab-button { --background: var(--k-grad); --box-shadow: var(--k-shadow-lg); --color: #fff; }
+ion-alert { --backdrop-opacity: 0.4; }
+
+button { -webkit-user-select: none; user-select: none; }
