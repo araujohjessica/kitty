@@ -9,7 +9,12 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "assets": "capacitor-assets generate --iconBackgroundColor #7c5cff --splashBackgroundColor #0f0e17",
+    "cap:sync": "ng build && cap sync",
+    "ios": "npm run cap:sync && cap open ios",
+    "android": "npm run cap:sync && cap open android",
+    "android:dev": "CAP_DEV=1 npm run android"
   },
   "private": true,
   "dependencies": {
@@ -21,9 +26,11 @@
     "@angular/platform-browser-dynamic": "22.1.7",
     "@angular/router": "22.1.7",
     "@angular/service-worker": "^22.1.7",
+    "@capacitor/android": "^8.5.3",
     "@capacitor/app": "8.1.2",
     "@capacitor/core": "8.5.3",
     "@capacitor/haptics": "8.0.2",
+    "@capacitor/ios": "^8.5.3",
     "@capacitor/keyboard": "8.0.6",
     "@capacitor/status-bar": "8.0.4",
     "@ionic/angular": "^9.0.0",
@@ -36,6 +43,7 @@
     "@angular/cli": "22.1.8",
     "@angular/compiler-cli": "22.1.7",
     "@angular/language-service": "22.1.7",
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "8.5.3",
     "@ionic/angular-toolkit": "^13.0.0",
     "angular-eslint": "22.5.0",

@@ -8,3 +8,12 @@ coverage/
 !.env.example
 .DS_Store
 *.log
+
+# Mobile: assinatura e configurações locais
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+local.properties
+google-services.json
+GoogleService-Info.plist

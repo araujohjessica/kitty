@@ -2,6 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonSpinner, ModalController } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+import { environment } from '../../../environments/environment';
 import { ApiService } from '../../core/api.service';
 import { GroupDetail } from '../../core/models';
 import { ToastService } from '../../shared/toast.service';
@@ -63,8 +65,15 @@ export class InviteModal {
   unknownEmail = signal(false);
   sending = signal(false);
 
-  get link() { return `${location.origin}/join/${this.group.inviteCode}`; }
-  get text() { return `Entra no grupo "${this.group.name}" no Kitty para dividirmos as despesas: ${this.link}`; }
+  /** Inside the native shell location.origin is capacitor://localhost, so invites use the public web URL instead. */
+  get link() {
+    const base = Capacitor.isNativePlatform() ? environment.webUrl : location.origin;
+    return base ? `${base}/join/${this.group.inviteCode}` : '';
+  }
+  get text() {
+    const where = this.link ? `Entre pelo link: ${this.link}\n` : '';
+    return `Entra no grupo "${this.group.name}" no Kitty para dividirmos as despesas.\n${where}Código de convite: ${this.group.inviteCode}`;
+  }
 
   digits = () => this.phone.replace(/\D/g, '');
   emailOk = () => /^\S+@\S+\.\S+$/.test(this.email.trim());
@@ -99,7 +108,7 @@ export class InviteModal {
   }
 
   async copy() {
-    try { await navigator.clipboard.writeText(this.link); this.toast.ok('Link copiado'); } catch { this.toast.fail(null, 'Não foi possível copiar'); }
+    try { await navigator.clipboard.writeText(this.link || this.group.inviteCode); this.toast.ok(this.link ? 'Link copiado' : 'Código copiado'); } catch { this.toast.fail(null, 'Não foi possível copiar'); }
   }
 
   close() { this.modalCtrl.dismiss(); }
