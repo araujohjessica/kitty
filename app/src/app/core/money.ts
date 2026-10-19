@@ -29,8 +29,15 @@ export function formatMoney(cents: number, currency = 'BRL', opts: { sign?: bool
   return cents < 0 ? `−${abs}` : abs;
 }
 
-/** "12,5" → 1250. Accepts comma or dot. */
+/**
+ * Converts what the user typed into cents.
+ * "12,5" → 1250 · "1.234,56" → 123456 · "12.5" → 1250 · "1.234" → 123400 · "R$ 10" → 1000
+ * A dot is a decimal separator only when there is no comma and it has 1–2 digits after it.
+ */
 export function parseToCents(input: string): number {
-  const n = parseFloat(input.replace(/\./g, '').replace(',', '.'));
+  let s = input.trim().replace(/[^\d.,-]/g, '');
+  if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+  else if (!/^-?\d+\.\d{1,2}$/.test(s)) s = s.replace(/\./g, '');
+  const n = parseFloat(s);
   return Number.isFinite(n) ? Math.round(n * 100) : 0;
 }
