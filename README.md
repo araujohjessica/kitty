@@ -6,7 +6,9 @@
 **Split group expenses with friends.** A mobile app for trips, roommates and dinners: add what you paid, see who owes whom, and settle up with Pix.
 
 🔗 **Live demo (web):** https://kitty-henna.vercel.app (tap **"Explorar com conta demo"**)
+
 📱 **Android & iOS:** coming soon to **Google Play** and the **App Store**
+
 🧩 **API:** [kitty-api](https://github.com/araujohjessica/kitty-api) · [Swagger docs](https://kitty-api-jn0c.onrender.com/docs)
 
 > The API runs on a free instance, so the first request after a while may take up to a minute.
