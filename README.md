@@ -1,26 +1,91 @@
 # Kitty 🐷
 
-App (Ionic + Angular, PWA) para dividir despesas em grupo. A API fica no repositório irmão `../kitty-api`.
+![CI](https://github.com/araujohjessica/kitty/actions/workflows/ci.yml/badge.svg)
+![Platforms](https://img.shields.io/badge/platforms-Web%20%7C%20Android%20%7C%20iOS-8b5cf6)
 
-```bash
-cd app && npm install && npm start   # http://localhost:4200
+**Split group expenses with friends.** A mobile app for trips, roommates and dinners: add what you paid, see who owes whom, and settle up with Pix.
+
+🔗 **Live demo (web):** https://kitty-henna.vercel.app (tap **"Explorar com conta demo"**)
+📱 **Android & iOS:** coming soon to **Google Play** and the **App Store**
+🧩 **API:** [kitty-api](https://github.com/araujohjessica/kitty-api) · [Swagger docs](https://kitty-api-jn0c.onrender.com/docs)
+
+> The API runs on a free instance, so the first request after a while may take up to a minute.
+
+## Features
+
+- **Groups** with invite links
+- **Expenses** split equally, by exact amounts or by percentage, with a live preview of each share
+- **Balances** with suggested transfers: the fewest payments needed to settle the group
+- **Pix settlements:** copy-and-paste Pix key, upload a receipt, and the receiver confirms it
+- **Profile** with a validated Pix key, plus light and dark themes
+- **One codebase, three platforms:** installable PWA on the web, plus native Android and iOS apps
+
+## Platforms
+
+| Platform | Status |
+|---|---|
+| 🌐 Web (PWA) | ✅ Live, installable from the browser |
+| 🤖 Android | ✅ Native build ready · 🚀 Google Play release coming soon |
+| 🍎 iOS | ✅ Native build ready · 🚀 App Store release coming soon |
+
+The native apps are built with **Capacitor** from the same Angular + Ionic codebase as the web version.
+
+## Stack
+
+| | |
+|---|---|
+| Framework | **Angular 22** (standalone components) + **Ionic 9** |
+| Native | **Capacitor 8** (Android and iOS) |
+| Offline/PWA | Angular Service Worker |
+| Tests | Vitest |
+| CI/CD | GitHub Actions + Vercel |
+
+## Architecture
+
+```
+app/
+├── src/app/
+│   ├── core/      # API client, auth service, guard, HTTP interceptor, money helpers
+│   ├── pages/     # auth, groups, group, expense form, settle, invite, join, profile
+│   └── shared/    # reusable components, Pix helpers, money pipe, toasts
+├── android/       # native Android project (Capacitor)
+└── ios/           # native iOS project (Capacitor)
 ```
 
-A URL da API fica em `app/src/environments/`.
+The money helpers mirror the API's integer-cent logic, so the split preview on the form matches exactly what the server will save.
 
-## App nativo (iOS e Android)
+## Testing
 
-O app usa o Capacitor. As pastas `app/ios` e `app/android` são projetos nativos completos.
+**22 unit tests** for money splitting, rounding, currency parsing and Pix formatting. Writing them caught a real bug: typing `12.5` was parsed as R$ 125,00 instead of R$ 12,50, now fixed and covered.
 
 ```bash
 cd app
-npm run ios            # build + sync + abre o Xcode (Run ▶ no simulador ou no iPhone)
-npm run android:dev    # build + sync + abre o Android Studio (API em http)
+npx ng test --watch=false
 ```
 
-- **API:** o app nativo usa `src/environments/environment.prod.ts` no build de produção e `environment.ts` no de desenvolvimento. Dispositivo físico e emulador Android não enxergam `localhost`: use o IP da máquina (emulador Android: `10.0.2.2`) ou a URL do Render.
-- **CORS:** a API precisa aceitar `capacitor://localhost` (iOS) e `https://localhost` / `http://localhost` (Android) em `CORS_ORIGIN`.
-- **Android:** o Gradle exige Java 21. Se o terminal tiver outra versão, use o JDK do Android Studio: `JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"`.
-- **Convites:** preencha `webUrl` em `environment.prod.ts` com o endereço público do app web, senão o convite enviado do app nativo leva só o código.
-- **Ícone e splash:** gerados a partir de `app/resources/`. Se mudar a arte, rode `npm run assets` (precisa liberar o script do `sharp` no npm).
-- **Lojas:** troque o `appId` (`app.kitty.mobile`) em `capacitor.config.ts` pelo seu, antes de publicar.
+## Running locally
+
+Start the [API](https://github.com/araujohjessica/kitty-api) first, then:
+
+```bash
+git clone https://github.com/araujohjessica/kitty.git
+cd kitty/app
+npm install
+npm start -- --port 8100
+```
+
+Open `http://localhost:8100`.
+
+### Native apps
+
+```bash
+cd app
+npm run build -- --configuration production
+npx cap sync
+npx cap open android   # Android Studio
+npx cap open ios       # Xcode (macOS)
+```
+
+## Author
+
+**Jessica Helena Araujo**, computer engineer · [GitHub](https://github.com/araujohjessica) · [LinkedIn](https://www.linkedin.com/in/jessica-araujo-89b328279/)
